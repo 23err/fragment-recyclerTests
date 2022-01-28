@@ -11,8 +11,11 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.geekbrains.tests.R
+import com.geekbrains.tests.TEST_NUMBER_OF_RESULTS_MINUS_1
 import com.geekbrains.tests.TEST_NUMBER_OF_RESULTS_PLUS_1
 import com.geekbrains.tests.view.details.DetailsFragment
+import org.junit.After
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -55,4 +58,28 @@ class DetailsFragmentEspressoTest {
         onView(withId(R.id.incrementButton)).perform(click())
         onView(withId(R.id.totalCountTextView)).check(matches(withText(TEST_NUMBER_OF_RESULTS_PLUS_1)))
     }
+
+    @Test
+    fun fragment_testDecrementButton() {
+        onView(withId(R.id.decrementButton)).perform(click())
+        onView(withId(R.id.totalCountTextView)).check(
+            matches(
+                withText(
+                    TEST_NUMBER_OF_RESULTS_MINUS_1
+                )
+            )
+        )
+    }
+
+    @Test
+    fun fragment_testArgumentsNotNull() {
+        val totalCountExtra = "TOTAL_COUNT_EXTRA"
+        val fragmentArgs = bundleOf(totalCountExtra to 10)
+        val scenario = launchFragmentInContainer<DetailsFragment>(fragmentArgs)
+        scenario.onFragment { fragment ->
+            val counter = fragment.arguments?.getInt(totalCountExtra)
+            Assert.assertNotNull(counter)
+        }
+    }
+
 }

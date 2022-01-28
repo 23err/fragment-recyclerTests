@@ -33,7 +33,6 @@ class MainActivityRecyclerViewTest {
     fun activitySearch_ScrollTo() {
         if (BuildConfig.TYPE == MainActivity.FAKE) {
             loadList()
-
             onView(withId(R.id.recyclerView))
                 .perform(
                     RecyclerViewActions.scrollTo<SearchResultViewHolder>(
@@ -95,6 +94,27 @@ class MainActivityRecyclerViewTest {
                 )
         }
     }
+
+    @Test
+    fun activitySearch_PerformCustomClickOnSpecifiedItem(){
+        if (BuildConfig.TYPE == MainActivity.FAKE){
+            loadList()
+            val clickCounter = 30
+            val scrollToCounter = 35
+
+            onView(withId(R.id.recyclerView))
+                .perform(
+                    RecyclerViewActions
+                        .scrollTo<SearchResultViewHolder>(getDescendantMatcher(scrollToCounter)),
+                    RecyclerViewActions
+                        .actionOnItem<SearchResultViewHolder>(getDescendantMatcher(clickCounter), tapOnItemWithId(R.id.checkbox))
+
+                )
+        }
+    }
+
+    private fun getDescendantMatcher(counter: Int) = hasDescendant(withText("FullName: $counter"))
+
 
     private fun loadList() {
         onView(withId(R.id.searchEditText)).perform(click())
