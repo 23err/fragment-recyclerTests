@@ -77,6 +77,8 @@ class MainActivityRecyclerViewTest {
                     )
                 )
         }
+
+
     }
 
     @Test

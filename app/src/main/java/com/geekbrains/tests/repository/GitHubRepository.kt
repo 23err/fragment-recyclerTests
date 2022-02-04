@@ -2,6 +2,7 @@ package com.geekbrains.tests.repository
 
 import com.geekbrains.tests.model.SearchResponse
 import com.geekbrains.tests.presenter.RepositoryContract
+import org.awaitility.kotlin.await
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,5 +30,9 @@ internal class GitHubRepository(private val gitHubApi: GitHubApi) : RepositoryCo
                 callback.handleGitHubError()
             }
         })
+    }
+
+    override suspend fun searchGithubAsync(query: String): SearchResponse {
+        return gitHubApi.searchGithubAsync(query).await()
     }
 }
